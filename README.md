@@ -42,8 +42,8 @@
 
 请前往仓库的 **Releases** 页面下载：
 
-- `小羊鸽单-版本号-x64.exe`：Windows 安装程序
-- `小羊鸽单-版本号-x64.zip`：免安装便携版，解压后运行 `小羊鸽单.exe`
+- `Xiaoyang-Gedan-版本号-x64.exe`：Windows 安装程序
+- `Xiaoyang-Gedan-版本号-x64.zip`：免安装便携版，解压后运行 `小羊鸽单.exe`
 - `SHA256SUMS.txt`：用于核对下载文件完整性的 SHA-256 校验值
 
 未签名的安装包可能触发 Windows SmartScreen。个人测试时可核对下载来源和文件哈希后，选择“更多信息 → 仍要运行”。不要关闭系统的整体安全防护。
@@ -66,8 +66,8 @@ npm run build:win
 
 输出位于 `release`：
 
-- `小羊鸽单-1.0.0-x64.exe`
-- `小羊鸽单-1.0.0-x64.zip`
+- `Xiaoyang-Gedan-1.0.0-x64.exe`
+- `Xiaoyang-Gedan-1.0.0-x64.zip`
 
 `release` 不提交到 Git。正式二进制文件应上传到 GitHub Releases。
 

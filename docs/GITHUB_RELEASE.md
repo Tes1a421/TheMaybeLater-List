@@ -49,8 +49,8 @@ GitHub Actions 会在 Windows 环境重新构建安装程序和 ZIP，并创建�
 npm ci
 npm run build:win
 gh release create v1.0.0 `
-  "release/小羊鸽单-1.0.0-x64.exe" `
-  "release/小羊鸽单-1.0.0-x64.zip" `
+  "release/Xiaoyang-Gedan-1.0.0-x64.exe" `
+  "release/Xiaoyang-Gedan-1.0.0-x64.zip" `
   --title "小羊鸽单 1.0.0" `
   --notes-file CHANGELOG.md
 ```

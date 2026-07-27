@@ -21,7 +21,7 @@
   "build": {
     "appId": "com.xiaoyang-gedan.desktop",
     "productName": "小羊鸽单",
-    "artifactName": "${productName}-${version}-${arch}.${ext}",
+    "artifactName": "Xiaoyang-Gedan-${version}-${arch}.${ext}",
     "directories": {
       "output": "release"
     },
