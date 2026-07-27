@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "小羊鸽单（The Maybe-Later List）：支持悬浮展开、自然语言日期和工作时间规则的桌面待办工具",
   "author": "Smallsheep_421",
+  "license": "MIT",
   "repository": {
     "type": "git",
     "url": "https://github.com/Tes1a421/xiaoyang-gedan.git"
@@ -27,6 +28,7 @@
     },
     "files": [
       "assets/**/*",
+      "LICENSE",
       "main.js",
       "preload.js",
       "renderer.js",
