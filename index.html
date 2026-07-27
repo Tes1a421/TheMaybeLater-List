@@ -1,0 +1,224 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>小羊鸽单</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <main class="app collapsed" id="app">
+      <section class="peek" aria-label="展开待办">
+        <div class="peek-mark">
+          <span class="peek-count" id="peekCount">0</span>
+          <span class="peek-label">待办</span>
+        </div>
+        <div class="peek-line"></div>
+        <span class="peek-arrow">‹</span>
+      </section>
+
+      <section class="panel">
+        <div class="reminder-toast" id="reminderToast" role="alert">
+          <span class="toast-icon">◷</span>
+          <div>
+            <strong>事项提醒</strong>
+            <span id="reminderToastText"></span>
+          </div>
+          <button id="dismissToast" aria-label="关闭提醒">×</button>
+        </div>
+        <header class="header drag-region">
+          <div>
+            <p class="eyebrow">THE MAYBE-LATER LIST</p>
+            <h1>今天要做什么？</h1>
+          </div>
+          <div class="header-actions no-drag">
+            <span class="date" id="today"></span>
+            <button class="icon-button settings-button" id="settingsButton" title="设置" aria-label="设置">
+              <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.8">
+                <circle cx="12" cy="12" r="3"></circle>
+                <path d="M19.4 15a1.7 1.7 0 0 0 .3 1.9l.1.1-2.8 2.8-.1-.1a1.7 1.7 0 0 0-1.9-.3 1.7 1.7 0 0 0-1 1.6v.2h-4V21a1.7 1.7 0 0 0-1-1.6 1.7 1.7 0 0 0-1.9.3l-.1.1L4.2 17l.1-.1a1.7 1.7 0 0 0 .3-1.9A1.7 1.7 0 0 0 3 14H2.8v-4H3a1.7 1.7 0 0 0 1.6-1 1.7 1.7 0 0 0-.3-1.9L4.2 7 7 4.2l.1.1a1.7 1.7 0 0 0 1.9.3 1.7 1.7 0 0 0 1-1.6v-.2h4V3a1.7 1.7 0 0 0 1 1.6 1.7 1.7 0 0 0 1.9-.3l.1-.1L19.8 7l-.1.1a1.7 1.7 0 0 0-.3 1.9 1.7 1.7 0 0 0 1.6 1h.2v4H21a1.7 1.7 0 0 0-1.6 1z"></path>
+              </svg>
+            </button>
+            <button class="icon-button close-button" id="closeButton" title="退出">×</button>
+          </div>
+        </header>
+
+        <nav class="filters" id="filters" aria-label="事项分类">
+          <button class="filter active" data-filter="all">
+            <span class="filter-dot all-dot"></span>
+            <span>全部</span><strong id="count-all">0</strong>
+          </button>
+          <button class="filter overdue-filter" data-filter="overdue">
+            <span class="filter-dot overdue-dot"></span>
+            <span>已逾期</span><strong id="count-overdue">0</strong>
+          </button>
+          <button class="filter" data-filter="important-urgent">
+            <span class="filter-dot red"></span>
+            <span>重要紧急</span><strong id="count-important-urgent">0</strong>
+          </button>
+          <button class="filter" data-filter="not-important-urgent">
+            <span class="filter-dot blue"></span>
+            <span>不重要紧急</span><strong id="count-not-important-urgent">0</strong>
+          </button>
+          <button class="filter" data-filter="important-not-urgent">
+            <span class="filter-dot amber"></span>
+            <span>重要不紧急</span><strong id="count-important-not-urgent">0</strong>
+          </button>
+          <button class="filter" data-filter="not-important-not-urgent">
+            <span class="filter-dot gray"></span>
+            <span>不重要不紧急</span><strong id="count-not-important-not-urgent">0</strong>
+          </button>
+        </nav>
+
+        <section class="content">
+          <div class="section-heading">
+            <span id="sectionTitle">进行中</span>
+            <span class="muted" id="activeCount">0 项</span>
+          </div>
+          <div class="task-list" id="taskList"></div>
+
+          <div class="completed-wrap" id="completedWrap">
+            <button class="completed-toggle" id="completedToggle">
+              <span>已完成</span>
+              <span><b id="completedCount">0</b> <i>⌄</i></span>
+            </button>
+            <div class="task-list completed-list" id="completedList"></div>
+          </div>
+        </section>
+
+        <form class="composer" id="composer">
+          <div class="composer-main">
+            <span class="plus">＋</span>
+            <input
+              id="taskInput"
+              autocomplete="off"
+              maxlength="80"
+              placeholder="新建事项"
+              title="可使用 #急 明天、#后天、#两小时后 等文本指令"
+            />
+          </div>
+          <div class="command-preview" id="commandPreview"></div>
+          <div class="composer-options">
+            <label>
+              <span class="option-icon">◆</span>
+              <select id="prioritySelect" aria-label="重要程度">
+                <option value="important-urgent">重要紧急</option>
+                <option value="important-not-urgent">重要不紧急</option>
+                <option value="not-important-urgent">不重要紧急</option>
+                <option value="not-important-not-urgent" selected>不重要不紧急</option>
+              </select>
+            </label>
+            <label id="dueDatePickerArea">
+              <span class="option-icon">□</span>
+              <input id="dueDateInput" type="date" aria-label="完成日期" title="完成日期" />
+            </label>
+            <button class="add-button" type="submit">添加</button>
+          </div>
+          <div class="composer-secondary">
+            <label>
+              <span class="option-icon">◷</span>
+              <select id="reminderOffsetSelect" aria-label="提醒设置">
+                <option value="none" selected>不提醒</option>
+                <option value="work-start">上班时提醒</option>
+                <option value="work-end-30">下班前 30 分钟</option>
+                <option value="0">到期时提醒</option>
+                <option value="20">提前 20 分钟</option>
+                <option value="60">提前 1 小时</option>
+                <option value="120">提前 2 小时</option>
+                <option value="1440">提前 1 天</option>
+                <option value="4320">提前 3 天</option>
+                <option value="10080">提前 7 天</option>
+                <option value="20160">提前 14 天</option>
+              </select>
+            </label>
+            <label class="time-option" id="dueTimePickerArea">
+              <span class="option-icon">·</span>
+              <input
+                id="dueTimeInput"
+                type="text"
+                value="18:00"
+                readonly
+                inputmode="none"
+                aria-label="完成时刻"
+                title="滚动选择完成时刻"
+              />
+            </label>
+          </div>
+          <div class="time-wheel-popover" id="timeWheelPopover" aria-hidden="true">
+            <div class="time-wheel-heading">
+              <span>完成时刻</span>
+              <strong id="timeWheelValue">18:00</strong>
+            </div>
+            <div class="time-wheel-body">
+              <div class="time-wheel-column">
+                <small>小时</small>
+                <div class="time-wheel" id="hourWheel"></div>
+              </div>
+              <b class="time-separator">:</b>
+              <div class="time-wheel-column">
+                <small>分钟</small>
+                <div class="time-wheel" id="minuteWheel"></div>
+              </div>
+            </div>
+            <button type="button" class="time-wheel-confirm" id="timeWheelConfirm">确定</button>
+          </div>
+        </form>
+
+        <div class="settings-overlay" id="settingsOverlay" aria-hidden="true">
+          <section class="settings-dialog" role="dialog" aria-modal="true" aria-labelledby="settingsTitle">
+            <div class="settings-heading">
+              <div>
+                <p class="eyebrow">PREFERENCES</p>
+                <h2 id="settingsTitle">设置</h2>
+              </div>
+              <button class="icon-button" id="settingsClose" aria-label="关闭设置">×</button>
+            </div>
+
+            <div class="setting-row">
+              <div>
+                <strong>开机自动启动</strong>
+                <span>登录 Windows 后自动运行小羊鸽单</span>
+              </div>
+              <label class="switch">
+                <input type="checkbox" id="openAtLogin">
+                <span></span>
+              </label>
+            </div>
+
+            <div class="work-time-setting">
+              <div class="work-time-title">
+                <strong>工作时间</strong>
+                <span>日期事项在上班时提醒，下班后标记逾期</span>
+              </div>
+              <div class="work-time-inputs">
+                <label>
+                  <span>上班</span>
+                  <input id="workStartInput" type="time" step="300" value="09:00">
+                </label>
+                <label>
+                  <span>下班</span>
+                  <input id="workEndInput" type="time" step="300" value="18:00">
+                </label>
+              </div>
+            </div>
+
+            <div class="setting-block">
+              <strong>点击关闭按钮时</strong>
+              <label class="radio-option">
+                <input type="radio" name="closeAction" value="hide">
+                <span><b>隐藏到状态栏</b><small>应用继续运行并正常发送提醒</small></span>
+              </label>
+              <label class="radio-option">
+                <input type="radio" name="closeAction" value="quit">
+                <span><b>彻底关闭应用</b><small>退出后将不会再发送提醒</small></span>
+              </label>
+            </div>
+
+            <button class="save-settings" id="saveSettings">保存设置</button>
+          </section>
+        </div>
+      </section>
+    </main>
+    <script src="renderer.js"></script>
+  </body>
+</html>

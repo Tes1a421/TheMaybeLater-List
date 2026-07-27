@@ -1,0 +1,68 @@
+{
+  "name": "xiaoyang-gedan",
+  "version": "1.0.0",
+  "description": "小羊鸽单（The Maybe-Later List）：支持悬浮展开、自然语言日期和工作时间规则的桌面待办工具",
+  "author": "Smallsheep_421",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Tes1a421/xiaoyang-gedan.git"
+  },
+  "homepage": "https://github.com/Tes1a421/xiaoyang-gedan#readme",
+  "bugs": {
+    "url": "https://github.com/Tes1a421/xiaoyang-gedan/issues"
+  },
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "dev": "electron .",
+    "build:win": "electron-builder --win nsis zip",
+    "build:portable": "electron-builder --win zip"
+  },
+  "build": {
+    "appId": "com.xiaoyang-gedan.desktop",
+    "productName": "小羊鸽单",
+    "artifactName": "${productName}-${version}-${arch}.${ext}",
+    "directories": {
+      "output": "release"
+    },
+    "files": [
+      "assets/**/*",
+      "main.js",
+      "preload.js",
+      "renderer.js",
+      "index.html",
+      "styles.css",
+      "package.json"
+    ],
+    "asar": true,
+    "win": {
+      "icon": "assets/app-icon.ico",
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64"
+          ]
+        },
+        {
+          "target": "zip",
+          "arch": [
+            "x64"
+          ]
+        }
+      ]
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "小羊鸽单",
+      "runAfterFinish": true
+    }
+  },
+  "devDependencies": {
+    "electron": "^37.2.3",
+    "electron-builder": "^26.0.12"
+  }
+}
